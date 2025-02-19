@@ -8,60 +8,52 @@ public class BallsMovement : MonoBehaviour
     private Vector3 dragEndPos;    // 드래그 종료 위치
     private bool isDragging = false;
 
-    public float forceMultiplier = 20f;
+    public float forceMultiplier;
     private Rigidbody rb;
+    public UnityEngine.Camera mainCamera;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        mainCamera = UnityEngine.Camera.main;
     }
 
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
-            dragStartPos = GetMouseWorldPosition();
+            dragStartPos = Input.mousePosition;
             isDragging = true;
         }
 
         if (Input.GetMouseButtonUp(0) && isDragging)
         {
-            dragEndPos = GetMouseWorldPosition();
+            dragEndPos = Input.mousePosition;
             ShootBall();
             isDragging = false;
         }
     }
 
-    private Vector3 GetMouseWorldPosition()
-    {
-        Ray ray = UnityEngine.Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out RaycastHit hit))
-        {
-            return hit.point; // 충돌한 지점 반환
-        }
-        return Vector3.zero;
-    }
-
     // 공을 발사하는 함수
     private void ShootBall()
     {
-        Vector3 direction = dragStartPos - dragEndPos;
-        direction.y = 0; // Y축 고정 (수평 방향만 적용)
+        Vector2 dragVector = dragStartPos - dragEndPos;
+        Vector2 dragDirection = dragVector.normalized;
 
-        Vector3 forward = transform.forward; // 공이 바라보는 정면 방향
+        Vector3 worldDragDirection = new Vector3(dragDirection.x, 0, dragDirection.y);
 
+        Vector3 forward = transform.forward; // 공이 바라보는 방향
         float maxAngle = 90f;
-        float angle = Vector3.Angle(forward, direction);
+        float angle = Vector3.Angle(forward, worldDragDirection);
 
         if (angle > maxAngle)
         {
-            // 최대 허용 각도로 보정 (정면 기준으로 가까운 방향으로 조정)
-            direction = Vector3.Slerp(forward, direction.normalized, maxAngle / angle);
-            direction *= (dragStartPos - dragEndPos).magnitude;
+            worldDragDirection = Vector3.Slerp(forward, worldDragDirection.normalized, maxAngle / angle);
+            worldDragDirection *= dragVector.magnitude;
         }
 
-        float dragDistance = direction.magnitude;
-        Vector3 force = direction.normalized * dragDistance * forceMultiplier;
+        float dragDistance = dragVector.magnitude; // 마우스 드래그 길이
+        Vector3 force = worldDragDirection.normalized * dragDistance * forceMultiplier;
 
         rb.AddForce(force, ForceMode.Impulse);
     }
