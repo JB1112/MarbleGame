@@ -1,21 +1,39 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class GameManager : Singleton<GameManager>
+public class GameManager : MonoBehaviour
 {
     [Header("Time")]
     public float time = 10.0f;
 
-    // Start is called before the first frame update
+    public static Action decideTurn;
+    public static Action turnStart;
+    public bool isIn;
+    public int turn;
+
     void Start()
     {
-        
+        decideTurn();
     }
 
-    // Update is called once per frame
-    void Update()
+    void ResetGame()
     {
-        
+        SceneManager.LoadScene(1);
+    }
+
+    void LoadStartScene()
+    {
+        SceneManager.LoadScene(0);
+    }
+
+    void turnChange()
+    {
+        turn++;
+
+        if(turn >3)
+        {
+            turn = 1;
+        }
     }
 }
