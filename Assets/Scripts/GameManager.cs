@@ -8,13 +8,22 @@ public class GameManager : MonoBehaviour
     public float time = 10.0f;
 
     public static Action decideTurn;
+    public static Action GameStart;
+    public static Action<Vector3> chekDistance; // 공과 엔드라인까지의 거리를 계산하기 위함
+    public static Action<float> CheckScore; //순서 정하기 및 점수 계산을 위한 로직
     public static Action turnStart;
-    public bool isIn;
-    public int turn;
+
+    public static bool isSetTurn; //턴을 정하는 중이라면
+    public static bool isIn;
+    public int turn = 1;
 
     void Start()
     {
-        decideTurn();
+        isSetTurn = true;
+        Debug.Log(isSetTurn);
+        decideTurn?.Invoke();
+
+        turnStart += turnChange;
     }
 
     void ResetGame()
@@ -35,5 +44,10 @@ public class GameManager : MonoBehaviour
         {
             turn = 1;
         }
+    }
+
+    private void OnDisable()
+    {
+        turnStart -= turnChange;
     }
 }

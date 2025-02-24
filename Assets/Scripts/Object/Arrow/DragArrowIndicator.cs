@@ -19,27 +19,27 @@ public class DragArrowIndicator : MonoBehaviour
         arrowImage.gameObject.SetActive(false); // ½ÃÀÛÇÒ ¶§ ¼û±è
     }
 
-    void Update()
-    {
-        if (isDragging)
-        {
-            Vector3 dragCurrentPos = Input.mousePosition;
-            UpdateArrow(dragStartPos, dragCurrentPos);
-        }
+    //void Update()
+    //{
+    //    if (isDragging)
+    //    {
+    //        Vector3 dragCurrentPos = Input.mousePosition;
+    //        UpdateArrow(dragStartPos, dragCurrentPos);
+    //    }
 
-        if (Input.GetMouseButtonDown(0))
-        {
-            dragStartPos = Input.mousePosition;
-            isDragging = true;
-            arrowImage.gameObject.SetActive(true);
-        }
+    //    if (Input.GetMouseButtonDown(0))
+    //    {
+    //        dragStartPos = Input.mousePosition;
+    //        isDragging = true;
+    //        arrowImage.gameObject.SetActive(true);
+    //    }
 
-        if (Input.GetMouseButtonUp(0))
-        {
-            isDragging = false;
-            arrowImage.gameObject.SetActive(false);
-        }
-    }
+    //    if (Input.GetMouseButtonUp(0))
+    //    {
+    //        isDragging = false;
+    //        arrowImage.gameObject.SetActive(false);
+    //    }
+    //}
 
     void UpdateArrow(Vector3 startMousePos, Vector3 endMousePos)
     {

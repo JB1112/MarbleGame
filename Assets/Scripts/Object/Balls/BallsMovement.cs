@@ -4,57 +4,51 @@ using UnityEngine;
 
 public class BallsMovement : MonoBehaviour
 {
-    private Vector3 dragStartPos;  // 드래그 시작 위치
-    private Vector3 dragEndPos;    // 드래그 종료 위치
-    private bool isDragging = false;
+    private Vector3 returnPoint;  // 반환할 위치
+    public float stopThreshold = 0.05f;
+    public float checkDelay = 1f;
 
-    public float forceMultiplier;
     private Rigidbody rb;
-    public UnityEngine.Camera mainCamera;
+    private bool isReturning = false;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        mainCamera = UnityEngine.Camera.main;
+
+        returnPoint = transform.position;
     }
 
-    void Update()
+    public void CheckStop()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            dragStartPos = Input.mousePosition;
-            isDragging = true;
-        }
+        StartCoroutine(CheckIfStopped());
+    }
 
-        if (Input.GetMouseButtonUp(0) && isDragging)
+    IEnumerator CheckIfStopped()
+    {
+        while (true)
         {
-            dragEndPos = Input.mousePosition;
-            ShootBall();
-            isDragging = false;
+            yield return new WaitForSeconds(checkDelay);  // 일정 시간 간격으로 체크
+
+            if (!isReturning && rb.velocity.magnitude < stopThreshold || transform.position.y < 0)
+            {
+                isReturning = true;  // 중복 실행 방지
+                ReturnBall();
+                yield break;
+            }
         }
     }
 
-    // 공을 발사하는 함수
-    private void ShootBall()
+    void ReturnBall()
     {
-        Vector2 dragVector = dragStartPos - dragEndPos;
-        Vector2 dragDirection = dragVector.normalized;
-
-        Vector3 worldDragDirection = new Vector3(dragDirection.x, 0, dragDirection.y);
-
-        Vector3 forward = transform.forward; // 공이 바라보는 방향
-        float maxAngle = 90f;
-        float angle = Vector3.Angle(forward, worldDragDirection);
-
-        if (angle > maxAngle)
+        if(GameManager.isSetTurn == true)
         {
-            worldDragDirection = Vector3.Slerp(forward, worldDragDirection.normalized, maxAngle / angle);
-            worldDragDirection *= dragVector.magnitude;
+            GameManager.chekDistance?.Invoke(transform.position);
         }
-
-        float dragDistance = dragVector.magnitude; // 마우스 드래그 길이
-        Vector3 force = worldDragDirection.normalized * dragDistance * forceMultiplier;
-
-        rb.AddForce(force, ForceMode.Impulse);
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+        transform.position = returnPoint;
+        transform.rotation = Quaternion.identity;
+        isReturning = false;  // 다시 움직일 수 있도록 초기화
+        GameManager.turnStart?.Invoke();
     }
 }
