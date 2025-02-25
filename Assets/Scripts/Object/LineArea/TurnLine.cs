@@ -23,7 +23,7 @@ public class TurnLine : MonoBehaviour
     {
         distance = MathF.Abs(ballDistance.z - endLine.transform.position.z);
 
-        Debug.Log(distance);
+        GameManager.CheckScore?.Invoke(distance);
     }
 
     private void OnDisable()

@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
 
     public static bool isSetTurn; //턴을 정하는 중이라면
     public static bool isIn;
-    public int turn = 1;
+    public static int turn = 1;
 
     void Start()
     {
