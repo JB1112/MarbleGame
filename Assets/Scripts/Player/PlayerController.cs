@@ -14,7 +14,6 @@ public class PlayerController : MonoBehaviour
 
 
     private bool isDragging = false;
-    private bool isMoving = false;
 
     public float forceMultiplier;
     private Rigidbody rb;
@@ -47,12 +46,12 @@ public class PlayerController : MonoBehaviour
 
     private void CheckMyTurn()
     {
-        isMoving = false; //Todo 임시 처리 내 턴이 아니면 false가 되도록 수정
+        GameManager.isMoving = false; //Todo 임시 처리 내 턴이 아니면 false가 되도록 수정
     }
 
     public void OnDragInput(InputAction.CallbackContext context)
     {
-        if (isMoving)
+        if (GameManager.isMoving || GameManager.isWaiting)
         {
             return;
         }
@@ -68,7 +67,7 @@ public class PlayerController : MonoBehaviour
             dragEndPos = Input.mousePosition;
             isDragging = false;
             ShootBall();
-            isMoving = true;
+            GameManager.isMoving = true;
             arrowIndicator.gameObject.SetActive(false);
         }
     }

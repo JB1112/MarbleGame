@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -14,40 +15,63 @@ public class GameManager : MonoBehaviour
     public static Action turnStart;
 
     public static bool isSetTurn; //턴을 정하는 중이라면
-    public static bool isIn;
+    public static bool isIn = false;
+    public static bool isWaiting = true;
+    public static bool isMoving = false;
+
     public static int turn = 1;
+    public static int PlayerNumber = 1;
+
+    public List<GameObject> balls = new List<GameObject>();
 
     void Start()
     {
-        isSetTurn = true;
-        Debug.Log(isSetTurn);
-        decideTurn?.Invoke();
+        GameStart += DropBalls;
 
-        turnStart += turnChange;
+        isSetTurn = true;
+        decideTurn?.Invoke();
+    }
+
+    private void DropBalls()
+    {
+        //임시로 오브젝트 활성화, 나중에 SpwanPosition을 두어 하늘에서 떨어지도록 설정
+        for (int i = 0; i < balls.Count; i++)
+        {
+            balls[i].SetActive(true);
+        }
+
+        turnStart?.Invoke();
     }
 
     void ResetGame()
     {
+        ResourcesManager.Instance.ClearDic();
         SceneManager.LoadScene(1);
     }
 
     void LoadStartScene()
     {
+        ResourcesManager.Instance.ClearDic();
         SceneManager.LoadScene(0);
     }
 
-    void turnChange()
+    public static void turnChange()
     {
         turn++;
 
         if(turn >3)
         {
             turn = 1;
-        }
-    }
 
-    private void OnDisable()
-    {
-        turnStart -= turnChange;
+            if (isSetTurn)
+            {
+                isSetTurn = false;
+                GameStart?.Invoke();
+
+                return;
+            }
+        }
+
+        turnStart?.Invoke();
     }
 }

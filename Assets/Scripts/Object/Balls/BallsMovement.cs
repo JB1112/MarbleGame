@@ -49,6 +49,6 @@ public class BallsMovement : MonoBehaviour
         transform.position = returnPoint;
         transform.rotation = Quaternion.identity;
         isReturning = false;  // 다시 움직일 수 있도록 초기화
-        GameManager.turnStart?.Invoke();
+        GameManager.turnChange();
     }
 }
