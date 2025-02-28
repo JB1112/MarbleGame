@@ -19,4 +19,9 @@ public class LineArea : MonoBehaviour
             lines[i].SetActive(true);
         }
     }
+
+    private void OnDisable()
+    {
+        GameManager.GameStart -= DrawLine;
+    }
 }

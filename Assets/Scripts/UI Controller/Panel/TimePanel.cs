@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;
 using TMPro;
 using UnityEngine;
 
@@ -27,6 +28,12 @@ public class TimePanel : MonoBehaviour
     private IEnumerator StartTimer()
     {
         isRunning = true;
+
+        while (GameManager.isWaiting)
+        {
+            yield return null;
+        }
+
         timeRemaining = 10f;
 
         while (timeRemaining > 0)

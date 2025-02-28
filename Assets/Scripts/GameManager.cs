@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
     public static Action<Vector3> chekDistance; // 공과 엔드라인까지의 거리를 계산하기 위함
     public static Action<float> CheckScore; //순서 정하기 및 점수 계산을 위한 로직
     public static Action turnStart;
+    public static Action CheckBead;
+    public static Action<int> LoseBead;
 
     public static bool isSetTurn; //턴을 정하는 중이라면
     public static bool isIn = false;
@@ -21,26 +23,87 @@ public class GameManager : MonoBehaviour
 
     public static int turn = 1;
     public static int PlayerNumber = 1;
+    public static int outBall = 0;
+    public int totalBalls = 21;
+    public int feildBalls = 12;
 
-    public List<GameObject> balls = new List<GameObject>();
+    public static List<Transform> spwanPosition = new List<Transform>();
+
+    public static List<int> haveBalls = new List<int>();
+    public static List<int> GainBalls = new List<int>();
+    public static List<int> curScore = new List<int>();
+
+    public ObjectPool pools;
+
+    private void Awake()
+    {
+        GameStart += DropBalls;
+    }
 
     void Start()
     {
-        GameStart += DropBalls;
-
+        turn = 1;
+        pools = GetComponent<ObjectPool>();
         isSetTurn = true;
         decideTurn?.Invoke();
     }
 
     private void DropBalls()
     {
-        //임시로 오브젝트 활성화, 나중에 SpwanPosition을 두어 하늘에서 떨어지도록 설정
-        for (int i = 0; i < balls.Count; i++)
+        for (int i = 0; i < 3; i++)
         {
-            balls[i].SetActive(true);
+            haveBalls.Add(3);
+            GainBalls.Add(0);
+            curScore.Add(0);
+        }
+        for (int i = 0; i < feildBalls; i++)
+        {
+            pools.SpawnFromPool("Bead", spwanPosition[i].position);
         }
 
-        turnStart?.Invoke();
+        CheckBead += UpdateBallCount;
+        LoseBead += LoseBall;
+    }
+
+    private void UpdateBallCount()
+    {
+        int i = turn - 2;
+        if (i < 0)
+        {
+            i = 2;
+        }
+
+        Debug.Log($"나간 공{outBall}");
+
+        if (outBall < 0 || isIn)
+        {
+            int dropAmount = GainBalls[i] + Math.Abs(outBall) + 1;
+            LoseBead?.Invoke(dropAmount);
+            haveBalls[i] = haveBalls[i] - 1;
+            feildBalls = feildBalls + GainBalls[i] + 1;
+            GainBalls[i] = 0;
+            Debug.Log($"필드 공{feildBalls}");
+            isIn = false;
+            outBall = 0;
+
+            return;
+        }
+
+        GainBalls[i] = GainBalls[i] + outBall;
+        feildBalls = feildBalls - outBall;
+        Debug.Log($"필드 공{feildBalls}");
+        outBall = 0;
+
+        CheckGameOver();
+    }
+
+    public void LoseBall(int num)
+    {
+        for(int i = 0; i< num; i++)
+        {
+            int j = UnityEngine.Random.Range(0, 21);
+            pools.SpawnFromPool("Bead", spwanPosition[j].position);
+        }
     }
 
     void ResetGame()
@@ -67,11 +130,34 @@ public class GameManager : MonoBehaviour
             {
                 isSetTurn = false;
                 GameStart?.Invoke();
+                turnStart?.Invoke();
 
                 return;
             }
         }
-
+        CheckBead?.Invoke();
         turnStart?.Invoke();
+    }
+
+    private void OnDisable()
+    {
+        GameStart -= DropBalls;
+
+        if(!isSetTurn)
+        {
+            CheckBead -= UpdateBallCount;
+        }
+    }
+
+    private void CheckGameOver()
+    {
+        if (feildBalls == 0)
+        {
+            Time.timeScale = 0;
+
+            UIController.Instance.ShowUI<GameOverUI>(UIs.Popup);
+
+
+        }
     }
 }

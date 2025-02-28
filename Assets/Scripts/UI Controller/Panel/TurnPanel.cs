@@ -32,4 +32,10 @@ public class TurnPanel : MonoBehaviour
         turnchecks[pre].SetActive(false);
         turnchecks[post].SetActive(true);
     }
+
+    private void OnDisable()
+    {
+        GameManager.turnStart -= ChangePlayer;
+        GameManager.CheckScore -= WriteDistance;
+    }
 }

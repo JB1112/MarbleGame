@@ -13,6 +13,7 @@ public class MainSceneUI : SceneUI
 
     public List<TextMeshProUGUI> Distances;
     public TextMeshProUGUI ScorePanelName;
+    public TextMeshProUGUI BeadsPanelName;
 
 
     private void Awake()
@@ -36,6 +37,7 @@ public class MainSceneUI : SceneUI
         CompareValue = CompareValue.OrderBy(x => x.value).ToList();
 
         ScorePanelName.text = $"Player{CompareValue[0].index.ToString()}\n\nPlayer{CompareValue[1].index.ToString()}\n\nPlayer{CompareValue[2].index.ToString()}";
+        BeadsPanelName.text = $"Player{CompareValue[0].index.ToString()}\n\nPlayer{CompareValue[1].index.ToString()}\n\nPlayer{CompareValue[2].index.ToString()}";
 
 
         UISetting();

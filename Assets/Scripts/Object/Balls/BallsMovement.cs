@@ -5,7 +5,7 @@ using UnityEngine;
 public class BallsMovement : MonoBehaviour
 {
     private Vector3 returnPoint;  // 반환할 위치
-    public float stopThreshold = 0.05f;
+    public float stopThreshold = 0.1f;
     public float checkDelay = 1f;
 
     private Rigidbody rb;
@@ -44,6 +44,12 @@ public class BallsMovement : MonoBehaviour
         {
             GameManager.chekDistance?.Invoke(transform.position);
         }
+        if(transform.position.y < 0 || GameManager.isIn)
+        {
+            GameManager.outBall = -GameManager.outBall;
+            GameManager.CheckScore(GameManager.outBall);
+        }
+
         rb.velocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
         transform.position = returnPoint;

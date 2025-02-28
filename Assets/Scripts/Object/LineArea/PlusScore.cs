@@ -3,12 +3,30 @@ using UnityEngine;
 public class PlusScore : MonoBehaviour
 {
     string beadTag = "Beads";
+    private string player = "Player";
 
     void OnTriggerExit(Collider other)
     {
         if (other.CompareTag(beadTag))
         {
-            Debug.Log("사출");
+            Beads beadScript = other.GetComponent<Beads>();
+
+            if (beadScript != null)
+            {
+                if(beadScript.isout == true)
+                {
+                    return;
+                }
+                beadScript.isout = true;
+
+                GameManager.outBall++;
+                GameManager.CheckScore(GameManager.outBall);
+            }
+        }
+        else if (other.CompareTag(player))
+        {
+            GameManager.isIn = false;
+            Debug.Log("나감");
         }
     }
 }
