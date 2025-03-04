@@ -12,8 +12,8 @@ public class MainSceneUI : SceneUI
     public GameObject BeadsPanel;
 
     public List<TextMeshProUGUI> Distances;
-    public TextMeshProUGUI ScorePanelName;
-    public TextMeshProUGUI BeadsPanelName;
+    public List<TextMeshProUGUI> ScorePanelName;
+    public List<TextMeshProUGUI> BeadsPanelName;
 
 
     private void Awake()
@@ -30,15 +30,21 @@ public class MainSceneUI : SceneUI
         {
             if (float.TryParse(Distances[i].text, out float value))
             {
-                CompareValue.Add((value, i+1));
+                CompareValue.Add((value, i));
             }
         }
 
         CompareValue = CompareValue.OrderBy(x => x.value).ToList();
 
-        ScorePanelName.text = $"Player{CompareValue[0].index.ToString()}\n\nPlayer{CompareValue[1].index.ToString()}\n\nPlayer{CompareValue[2].index.ToString()}";
-        BeadsPanelName.text = $"Player{CompareValue[0].index.ToString()}\n\nPlayer{CompareValue[1].index.ToString()}\n\nPlayer{CompareValue[2].index.ToString()}";
-
+        for (int i = 0;i < CompareValue.Count;i++)
+        {
+            GameManager.mainGameTurn.Add(CompareValue[i].index);
+            Debug.Log(CompareValue[i].index);
+            Debug.Log(GameManager.mainGameTurn[i]);
+            Debug.Log(GameManager.players[i]);
+            ScorePanelName[i].text = GameManager.players[GameManager.mainGameTurn[i]];
+            BeadsPanelName[i].text = GameManager.players[GameManager.mainGameTurn[i]];
+        }
 
         UISetting();
         ShowNoticePanel();
@@ -62,6 +68,12 @@ public class MainSceneUI : SceneUI
         {
             UIController.Instance.ShowUI<NoticeUI2>(UIs.Popup);
         }
+    }
+
+    public void OnOptionBtnClick()
+    {
+        UIController.Instance.ShowUI<MainOptionUI>(UIs.Popup);
+        Time.timeScale = 0;
     }
 
     private void OnDisable()

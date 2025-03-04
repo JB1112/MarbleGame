@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -10,6 +11,7 @@ public class GameOverUI : PopupUI
     public List<TextMeshProUGUI> gainBalls;
     public List<TextMeshProUGUI> scores;
     public List<GameObject> WinText;
+    public GameObject DrawTxt;
 
     private void Start()
     {
@@ -19,15 +21,22 @@ public class GameOverUI : PopupUI
     {
         for(int i = 0; i < 3; i++)
         {
-            gainBalls[i].text = $"Beads : {GameManager.GainBalls[i]}";
-            scores[i].text = $"Score : {GameManager.curScore[i]}";
+            gainBalls[i].text = $"Beads : {GameManager.GainBalls[GameManager.mainGameTurn[i]]}";
+            scores[i].text = $"Score : {GameManager.curScore[GameManager.mainGameTurn[i]]}";
         }
 
-        int highestIndex = GetHighestIndex(GameManager.curScore);
+        int highestIndex = GetHighestIndex(scores);
 
         if (highestIndex == -1) // 동률이면 두 번째 리스트에서 비교
         {
-            highestIndex = GetHighestIndex(GameManager.GainBalls);
+            highestIndex = GetHighestIndex(gainBalls);
+
+            if(highestIndex == -1)
+            {
+                DrawTxt.SetActive(true);
+
+                return;
+            }
         }
 
         WinText[highestIndex].SetActive(true);
@@ -35,8 +44,6 @@ public class GameOverUI : PopupUI
 
     public void OnRetryBtnClick()
     {
-        GameManager.haveBalls.Clear();
-        GameManager.GainBalls.Clear();
         ResourcesManager.Instance.ClearDic();
         Time.timeScale = 1;
         SceneManager.LoadScene(1);
@@ -44,19 +51,31 @@ public class GameOverUI : PopupUI
 
     public void OnTitleBtnClick()
     {
-        GameManager.haveBalls.Clear();
-        GameManager.GainBalls.Clear();
         ResourcesManager.Instance.ClearDic();
         Time.timeScale = 1;
         SceneManager.LoadScene(0);
     }
 
-    private int GetHighestIndex(List<int> scores)
+    private int GetHighestIndex(List<TextMeshProUGUI> scores)
     {
         if (scores.Count == 0) return -1;
 
-        float maxValue = scores.Max();
-        List<int> maxIndexes = scores
+        Regex regex = new Regex(@"\d+(\.\d+)?");
+
+        List<float> scoreValues = scores
+            .Select(text => {
+                Match match = regex.Match(text.text); // 문자열에서 숫자 찾기
+                return match.Success ? float.Parse(match.Value) : float.MinValue;
+            })
+            .ToList();
+
+        for (int i = 0; i < scoreValues.Count; i++)
+        {
+            Debug.Log(scoreValues[i]);
+        }
+        float maxValue = scoreValues.Max();
+
+        List<int> maxIndexes = scoreValues
             .Select((value, index) => new { value, index })
             .Where(x => x.value == maxValue)
             .Select(x => x.index)

@@ -4,8 +4,9 @@ public class Beads : MonoBehaviour
 {
     public bool isout = false;
 
-    private void Start()
+    private void OnEnable()
     {
+        isout = false;
         GameManager.CheckBead += CheckIsOut;
     }
 

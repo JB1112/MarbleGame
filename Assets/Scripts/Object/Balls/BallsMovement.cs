@@ -44,7 +44,7 @@ public class BallsMovement : MonoBehaviour
         {
             GameManager.chekDistance?.Invoke(transform.position);
         }
-        if(transform.position.y < 0 || GameManager.isIn)
+        else if(transform.position.y < 0 || GameManager.isIn)
         {
             GameManager.outBall = -GameManager.outBall;
             GameManager.CheckScore(GameManager.outBall);

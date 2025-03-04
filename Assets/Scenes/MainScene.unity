@@ -921,7 +921,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 700, z: 0.1}
+  m_Size: {x: 1.005, y: 700, z: 0.02}
   m_Center: {x: 0, y: 0, z: 0.5}
 --- !u!23 &456351498
 MeshRenderer:
@@ -1302,7 +1302,6 @@ GameObject:
   m_Component:
   - component: {fileID: 644035465}
   - component: {fileID: 644035466}
-  - component: {fileID: 644035467}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1338,25 +1337,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   time: 10
-  totalBalls: 12
+  SubCamera: {fileID: 772931911}
+  totalBalls: 21
   feildBalls: 12
-  pools: {fileID: 0}
---- !u!114 &644035467
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 644035464}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61177b3f1cf245142b3202252c266686, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Pools:
-  - tag: Bead
-    prefab: {fileID: 1212629849602769520, guid: 764add791d0cd8947ae864ef4fc1eb68, type: 3}
-    size: 21
+  pools: {fileID: 830867293}
 --- !u!1 &651175729
 GameObject:
   m_ObjectHideFlags: 0
@@ -1397,7 +1381,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 700, z: 0.1}
+  m_Size: {x: 1.005, y: 700, z: 0.02}
   m_Center: {x: 0, y: 0, z: 0.5}
 --- !u!23 &651175731
 MeshRenderer:
@@ -1700,6 +1684,54 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!1 &830867292
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 830867294}
+  - component: {fileID: 830867293}
+  m_Layer: 0
+  m_Name: ObjectPool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &830867293
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 830867292}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61177b3f1cf245142b3202252c266686, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Pools:
+  - tag: Bead
+    prefab: {fileID: 1212629849602769520, guid: 764add791d0cd8947ae864ef4fc1eb68, type: 3}
+    size: 21
+--- !u!4 &830867294
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 830867292}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 7.8347125, y: 0.00000047683716, z: 25.967968}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &838724480
 GameObject:
   m_ObjectHideFlags: 0
@@ -1774,7 +1806,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 700, z: 0.1}
+  m_Size: {x: 1.005, y: 700, z: 0.02}
   m_Center: {x: 0, y: 0, z: -0.5}
 --- !u!23 &928356394
 MeshRenderer:
@@ -3172,3 +3204,4 @@ SceneRoots:
   - {fileID: 1195257808}
   - {fileID: 644035465}
   - {fileID: 1219155953}
+  - {fileID: 830867294}

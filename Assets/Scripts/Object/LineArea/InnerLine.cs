@@ -10,12 +10,15 @@ public class InnerLine : MonoBehaviour
 
     public float time = 3f; //임시 1초 설정
 
+    private void Awake()
+    {
+        GameManager.isWaiting = true;
+    }
+
     void Start()
     {
         GameManager.LoseBead += MakeWall;
-
         StartCoroutine(EraseWall(time));
-        //collider = GetComponent<BoxCollider>();
         collider.enabled = false;
     }
 
@@ -33,5 +36,10 @@ public class InnerLine : MonoBehaviour
         Wall.SetActive(false);
         collider.enabled = true;
         GameManager.isWaiting = false;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.LoseBead -= MakeWall;
     }
 }

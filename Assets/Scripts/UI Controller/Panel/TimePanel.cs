@@ -29,12 +29,12 @@ public class TimePanel : MonoBehaviour
     {
         isRunning = true;
 
+        timeRemaining = 10f;
+
         while (GameManager.isWaiting)
         {
             yield return null;
         }
-
-        timeRemaining = 10f;
 
         while (timeRemaining > 0)
         {

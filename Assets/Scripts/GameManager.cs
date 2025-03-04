@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour
     [Header("Time")]
     public float time = 10.0f;
 
+    public GameObject SubCamera;
+
     public static Action decideTurn;
     public static Action GameStart;
     public static Action<Vector3> chekDistance; // 공과 엔드라인까지의 거리를 계산하기 위함
@@ -29,6 +31,9 @@ public class GameManager : MonoBehaviour
 
     public static List<Transform> spwanPosition = new List<Transform>();
 
+    public static List<string> players = new List<string>();
+    public static List<int> mainGameTurn = new List<int>();
+
     public static List<int> haveBalls = new List<int>();
     public static List<int> GainBalls = new List<int>();
     public static List<int> curScore = new List<int>();
@@ -43,19 +48,23 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         turn = 1;
-        pools = GetComponent<ObjectPool>();
         isSetTurn = true;
         decideTurn?.Invoke();
-    }
 
-    private void DropBalls()
-    {
         for (int i = 0; i < 3; i++)
         {
+            players.Add($"Player{i + 1}");
             haveBalls.Add(3);
             GainBalls.Add(0);
             curScore.Add(0);
         }
+
+    }
+
+    private void DropBalls()
+    {
+        SubCamera.SetActive(true);
+
         for (int i = 0; i < feildBalls; i++)
         {
             pools.SpawnFromPool("Bead", spwanPosition[i].position);
@@ -73,12 +82,12 @@ public class GameManager : MonoBehaviour
             i = 2;
         }
 
-        Debug.Log($"나간 공{outBall}");
 
         if (outBall < 0 || isIn)
         {
             int dropAmount = GainBalls[i] + Math.Abs(outBall) + 1;
             LoseBead?.Invoke(dropAmount);
+            Debug.Log(dropAmount);
             haveBalls[i] = haveBalls[i] - 1;
             feildBalls = feildBalls + GainBalls[i] + 1;
             GainBalls[i] = 0;
@@ -91,7 +100,6 @@ public class GameManager : MonoBehaviour
 
         GainBalls[i] = GainBalls[i] + outBall;
         feildBalls = feildBalls - outBall;
-        Debug.Log($"필드 공{feildBalls}");
         outBall = 0;
 
         CheckGameOver();
@@ -146,6 +154,7 @@ public class GameManager : MonoBehaviour
         if(!isSetTurn)
         {
             CheckBead -= UpdateBallCount;
+            LoseBead -= LoseBall;
         }
     }
 
