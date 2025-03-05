@@ -53,4 +53,9 @@ public class TimePanel : MonoBehaviour
 
         GameManager.turnChange();
     }
+
+    private void OnDisable()
+    {
+        GameManager.turnStart -= TimeGoseOn;
+    }
 }

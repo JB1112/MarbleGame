@@ -9,7 +9,9 @@ public class PlayerController : MonoBehaviour
     private Vector3 dragCurrentPos;
     public RectTransform arrowIndicator; // 화살표 방향 표시용
     public float rotationOffset = 90f; // 화살표 보정
-    public float scaleFactor = 1f; // 화살표 길이 증가 비율
+    public float scaleFactor = 0.05f; // 화살표 길이 증가 비율
+
+    public AudioSource audio;
 
 
 
@@ -96,12 +98,13 @@ public class PlayerController : MonoBehaviour
 
         rb.AddForce(force, ForceMode.Impulse);
 
+        audio.Play();
+
         move.CheckStop();
     }
 
     void UpdateArrow(Vector3 startMousePos, Vector3 endMousePos)
     {
-        //Todo 화살표 이미지 적절하지 않음 바닥에 깔리는 형식으로 하는게 좋아보임
         Vector2 dragVector = endMousePos - startMousePos;
         Vector2 dragDirection = dragVector.normalized;
 
@@ -111,11 +114,11 @@ public class PlayerController : MonoBehaviour
         float angle = Mathf.Atan2(worldDragDirection.z, worldDragDirection.x) * Mathf.Rad2Deg;
         float clampedAngle = Mathf.Clamp(angle + rotationOffset, -90f, 90f);
 
-        arrowIndicator.rotation = Quaternion.Euler(0, 0, clampedAngle);
+        arrowIndicator.localRotation = Quaternion.Euler(0, 0, clampedAngle);
 
         // 드래그 거리 계산 & 화살표 길이 조정
         float dragDistance = dragVector.magnitude; // 마우스 드래그 거리
-        float newHeight = Mathf.Max(dragDistance * scaleFactor, 100f);
+        float newHeight = Mathf.Max(dragDistance * scaleFactor, 1f);
         arrowIndicator.sizeDelta = new Vector2(arrowIndicator.sizeDelta.x, newHeight);
     }
 

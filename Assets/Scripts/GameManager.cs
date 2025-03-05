@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
     public static bool isMoving = false;
 
     public static int turn = 1;
+    public static int preTurn;
     public static int PlayerNumber = 1;
     public static int outBall = 0;
     public int totalBalls = 21;
@@ -33,6 +34,7 @@ public class GameManager : MonoBehaviour
 
     public static List<string> players = new List<string>();
     public static List<int> mainGameTurn = new List<int>();
+    public static List<bool> isOver = new List<bool>();
 
     public static List<int> haveBalls = new List<int>();
     public static List<int> GainBalls = new List<int>();
@@ -51,12 +53,20 @@ public class GameManager : MonoBehaviour
         isSetTurn = true;
         decideTurn?.Invoke();
 
+        players.Clear();
+        mainGameTurn.Clear();
+        haveBalls.Clear();
+        GainBalls.Clear();
+        curScore.Clear();
+        isOver.Clear();
+
         for (int i = 0; i < 3; i++)
         {
             players.Add($"Player{i + 1}");
             haveBalls.Add(3);
             GainBalls.Add(0);
             curScore.Add(0);
+            isOver.Add(false);
         }
 
     }
@@ -76,12 +86,7 @@ public class GameManager : MonoBehaviour
 
     private void UpdateBallCount()
     {
-        int i = turn - 2;
-        if (i < 0)
-        {
-            i = 2;
-        }
-
+        int i = preTurn - 1;
 
         if (outBall < 0 || isIn)
         {
@@ -95,12 +100,26 @@ public class GameManager : MonoBehaviour
             isIn = false;
             outBall = 0;
 
+            checkYouFire();
+
             return;
         }
 
         GainBalls[i] = GainBalls[i] + outBall;
         feildBalls = feildBalls - outBall;
         outBall = 0;
+
+        CheckGameOver();
+    }
+
+    private void checkYouFire()
+    {
+        int i = preTurn - 1;
+
+        if (haveBalls[i] == 0)
+        {
+            isOver[i] = true;
+        }
 
         CheckGameOver();
     }
@@ -128,21 +147,43 @@ public class GameManager : MonoBehaviour
 
     public static void turnChange()
     {
-        turn++;
+        preTurn = turn;
+        int startTurn = turn;
+        bool allOver = true;
 
-        if(turn >3)
+        do
         {
-            turn = 1;
+            turn++;
 
-            if (isSetTurn)
+            if (turn > 3)
             {
-                isSetTurn = false;
-                GameStart?.Invoke();
-                turnStart?.Invoke();
-
-                return;
+                turn = 1;
             }
+
+            if (!isOver[turn - 1])
+            {
+                allOver = false;
+                break;
+            }
+
+        } while (turn != startTurn);
+
+        if (allOver)
+        {
+            Time.timeScale = 0;
+            UIController.Instance.ShowUI<GameOverUI>(UIs.Popup);
+            return;
         }
+
+        if (turn == 1 && isSetTurn)
+        {
+            isSetTurn = false;
+            isIn = false;
+            GameStart?.Invoke();
+            turnStart?.Invoke();
+            return;
+        }
+
         CheckBead?.Invoke();
         turnStart?.Invoke();
     }
@@ -160,7 +201,20 @@ public class GameManager : MonoBehaviour
 
     private void CheckGameOver()
     {
-        if (feildBalls == 0)
+        bool allOver = false;
+
+        for(int i = 0; i < isOver.Count; i++)
+        {
+            if (!isOver[i])
+            {
+                allOver = false;
+                break;
+            }
+
+            allOver = true;
+        }
+
+        if (feildBalls == 0 || allOver)
         {
             Time.timeScale = 0;
 

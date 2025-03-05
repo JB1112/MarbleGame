@@ -5,7 +5,7 @@ public class PlusScore : MonoBehaviour
     string beadTag = "Beads";
     private string player = "Player";
 
-    void OnTriggerExit(Collider other)
+    void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag(beadTag))
         {

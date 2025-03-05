@@ -23,11 +23,12 @@ public class MainMenuUI : PopupUI
 
     public void ExitGame()
     {
-#if UNITY_EDITOR
+    #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
-#else
-            //Application.Quit();
-#endif
+    #else
+        Application.Quit();
+        System.Diagnostics.Process.GetCurrentProcess().Kill();
+    #endif
     }
 
     public void CloseMenu()

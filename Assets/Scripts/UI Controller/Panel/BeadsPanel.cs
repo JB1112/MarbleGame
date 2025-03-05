@@ -16,11 +16,7 @@ public class BeadsPanel : MonoBehaviour
 
     private void Calculate()
     {
-        int i = GameManager.turn - 2;
-        if (i < 0)
-        {
-            i = 2;
-        }
+        int i = GameManager.preTurn - 1;
         haveBalls[i].text = $"X{GameManager.haveBalls[i]}";
         gainBalls[i].text = $"X{GameManager.GainBalls[i]}";
     }

@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 
 public class GameOverUI : PopupUI
 {
+    public List<TextMeshProUGUI> playerName;
     public List<TextMeshProUGUI> gainBalls;
     public List<TextMeshProUGUI> scores;
     public List<GameObject> WinText;
@@ -21,6 +22,8 @@ public class GameOverUI : PopupUI
     {
         for(int i = 0; i < 3; i++)
         {
+            Debug.Log(GameManager.mainGameTurn[i]);
+            playerName[i].text = $"{GameManager.players[i]}";
             gainBalls[i].text = $"Beads : {GameManager.GainBalls[GameManager.mainGameTurn[i]]}";
             scores[i].text = $"Score : {GameManager.curScore[GameManager.mainGameTurn[i]]}";
         }

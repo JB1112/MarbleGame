@@ -38,11 +38,7 @@ public class ScorePanel : MonoBehaviour
 
     private void ChangePlayer()
     {
-        int pre = GameManager.turn - 2;
-        if (pre < 0)
-        {
-            pre = 2;
-        }
+        int pre = GameManager.preTurn -1;
         int post = GameManager.turn - 1;
 
         turnchecks[pre].SetActive(false);

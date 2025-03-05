@@ -8,6 +8,8 @@ public class BallsMovement : MonoBehaviour
     public float stopThreshold = 0.1f;
     public float checkDelay = 1f;
 
+    public AudioSource audio;
+
     private Rigidbody rb;
     private bool isReturning = false;
 
@@ -49,6 +51,7 @@ public class BallsMovement : MonoBehaviour
             GameManager.outBall = -GameManager.outBall;
             GameManager.CheckScore(GameManager.outBall);
         }
+        audio.Stop();
 
         rb.velocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;

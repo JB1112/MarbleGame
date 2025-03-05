@@ -921,8 +921,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.005, y: 700, z: 0.02}
-  m_Center: {x: 0, y: 0, z: 0.5}
+  m_Size: {x: 1.12, y: 700, z: 0.05}
+  m_Center: {x: 0, y: 0, z: -0.5}
 --- !u!23 &456351498
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1032,6 +1032,7 @@ GameObject:
   - component: {fileID: 478742008}
   - component: {fileID: 478742009}
   - component: {fileID: 478742010}
+  - component: {fileID: 478742011}
   m_Layer: 0
   m_Name: PlayerBall
   m_TagString: Player
@@ -1181,6 +1182,7 @@ MonoBehaviour:
   arrowIndicator: {fileID: 1330061428}
   rotationOffset: 90
   scaleFactor: 1
+  audio: {fileID: 478742011}
   forceMultiplier: 5
   mainCamera: {fileID: 963194227}
   playerInput: {fileID: 0}
@@ -1230,6 +1232,102 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!82 &478742011
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 478742002}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: -3819092142511498274, guid: fd45ed7da0f8bb94d8d5fff2f0052823, type: 2}
+  m_audioClip: {fileID: 8300000, guid: e805bf5c8bbbbda49bb46300cb4cad72, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &589971892
 GameObject:
   m_ObjectHideFlags: 0
@@ -1381,8 +1479,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.005, y: 700, z: 0.02}
-  m_Center: {x: 0, y: 0, z: 0.5}
+  m_Size: {x: 1.12, y: 700, z: 0.05}
+  m_Center: {x: 0, y: 0, z: -0.5}
 --- !u!23 &651175731
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1806,8 +1904,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.005, y: 700, z: 0.02}
-  m_Center: {x: 0, y: 0, z: -0.5}
+  m_Size: {x: 1.12, y: 700, z: 0.05}
+  m_Center: {x: 0, y: 0, z: 0.5}
 --- !u!23 &928356394
 MeshRenderer:
   m_ObjectHideFlags: 0

@@ -1215,6 +1215,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mySortingOrder: 0
+  playerName:
+  - {fileID: 6619988295513731137}
+  - {fileID: 8733274393697738575}
+  - {fileID: 4892603347378254478}
   gainBalls:
   - {fileID: 3423769956269953339}
   - {fileID: 3727670045058001069}
