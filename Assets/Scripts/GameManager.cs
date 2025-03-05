@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using UnityEditor.Build.Content;
+using Unity.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -25,6 +25,10 @@ public class GameManager : Singleton<GameManager>
     public bool isMoving = false;
 
     private bool isSceneLoaded = false;
+
+    public float masterVolume = 1;
+    public float BGM = 1;
+    public float EffectSoundVolume = 1;
 
     public int turn = 1;
     public int preTurn;
@@ -54,14 +58,6 @@ public class GameManager : Singleton<GameManager>
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
 
-        GameStart -= DropBalls;
-
-        if (!isSetTurn)
-        {
-            CheckBead -= UpdateBallCount;
-            LoseBead -= LoseBall;
-        }
-
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -72,6 +68,7 @@ public class GameManager : Singleton<GameManager>
         {
             CheckBead -= UpdateBallCount;
             LoseBead -= LoseBall;
+            isSetTurn = true;
         }
 
 

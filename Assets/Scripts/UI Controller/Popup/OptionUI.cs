@@ -8,8 +8,12 @@ public class OptionUI : PopupUI
     [SerializeField] private Slider sfmSlider;
     [SerializeField] private Slider bgmSlider;
 
-    private void Awake()
+    private void OnEnable()
     {
+        masterSlider.value = GameManager.Instance.masterVolume;
+        sfmSlider.value = GameManager.Instance.EffectSoundVolume;
+        bgmSlider.value = GameManager.Instance.BGM;
+
         masterSlider.onValueChanged.AddListener(AudioMixerManager.Instance.SetmasterVolume);
         bgmSlider.onValueChanged.AddListener(AudioMixerManager.Instance.SetbgmVolume);
         sfmSlider.onValueChanged.AddListener(AudioMixerManager.Instance.SetsfxVolume);

@@ -8,16 +8,25 @@ public class AudioMixerManager : Singleton<AudioMixerManager>
 
     public void SetbgmVolume(float volume)
     {
-        audioMixer.SetFloat("BGM", Mathf.Log10(volume) * 20);
+        float adjustedVolume = Mathf.Clamp(volume, 0.0001f, 1f);
+
+        audioMixer.SetFloat("BGM", Mathf.Log10(adjustedVolume) * 20);
+        GameManager.Instance.BGM = volume;
     }
 
     public void SetsfxVolume(float volume)
     {
-        audioMixer.SetFloat("SFX", Mathf.Log10(volume) * 20);
+        float adjustedVolume = Mathf.Clamp(volume, 0.0001f, 1f);
+
+        audioMixer.SetFloat("SFX", Mathf.Log10(adjustedVolume) * 20);
+        GameManager.Instance.EffectSoundVolume = volume;
     }
 
     public void SetmasterVolume(float volume)
     {
-        audioMixer.SetFloat("Master", Mathf.Log10(volume) * 20);
+        float adjustedVolume = Mathf.Clamp(volume, 0.0001f, 1f);
+
+        audioMixer.SetFloat("Master", Mathf.Log10(adjustedVolume) * 20);
+        GameManager.Instance.masterVolume = volume;
     }
 }
