@@ -19,13 +19,13 @@ public class PlusScore : MonoBehaviour
                 }
                 beadScript.isout = true;
 
-                GameManager.outBall++;
-                GameManager.CheckScore(GameManager.outBall);
+                GameManager.Instance.outBall++;
+                GameManager.Instance.CheckScore(GameManager.Instance.outBall);
             }
         }
         else if (other.CompareTag(player))
         {
-            GameManager.isIn = false;
+            GameManager.Instance.isIn = false;
         }
     }
 }

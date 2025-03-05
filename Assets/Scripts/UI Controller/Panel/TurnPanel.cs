@@ -9,25 +9,25 @@ public class TurnPanel : MonoBehaviour
 
     private void Awake()
     {
-        GameManager.turnStart += ChangePlayer;
-        GameManager.CheckScore += WriteDistance;
+        GameManager.Instance.turnStart += ChangePlayer;
+        GameManager.Instance.CheckScore += WriteDistance;
     }
 
     private void WriteDistance(float distance)
     {
-        int i = GameManager.turn - 1;
+        int i = GameManager.Instance.turn - 1;
         distances[i].text = distance.ToString("0.00");
 
     }
 
     private void ChangePlayer()
     {
-        int pre = GameManager.turn - 2;
+        int pre = GameManager.Instance.turn - 2;
         if(pre <0)
         {
             pre = 2;
         }
-        int post = GameManager.turn - 1;
+        int post = GameManager.Instance.turn - 1;
 
         turnchecks[pre].SetActive(false);
         turnchecks[post].SetActive(true);
@@ -35,7 +35,7 @@ public class TurnPanel : MonoBehaviour
 
     private void OnDisable()
     {
-        GameManager.turnStart -= ChangePlayer;
-        GameManager.CheckScore -= WriteDistance;
+        GameManager.Instance.turnStart -= ChangePlayer;
+        GameManager.Instance.CheckScore -= WriteDistance;
     }
 }

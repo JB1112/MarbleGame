@@ -12,19 +12,19 @@ public class InnerLine : MonoBehaviour
 
     private void Awake()
     {
-        GameManager.isWaiting = true;
+        GameManager.Instance.isWaiting = true;
     }
 
     void Start()
     {
-        GameManager.LoseBead += MakeWall;
+        GameManager.Instance.LoseBead += MakeWall;
         StartCoroutine(EraseWall(time));
         collider.enabled = false;
     }
 
     private void MakeWall(int obj)
     {
-        GameManager.isWaiting = true;
+        GameManager.Instance.isWaiting = true;
         Wall.SetActive(true);
         collider.enabled = false;
         StartCoroutine(EraseWall(time));
@@ -35,11 +35,11 @@ public class InnerLine : MonoBehaviour
         yield return new WaitForSeconds(time);
         Wall.SetActive(false);
         collider.enabled = true;
-        GameManager.isWaiting = false;
+        GameManager.Instance.isWaiting = false;
     }
 
     private void OnDisable()
     {
-        GameManager.LoseBead -= MakeWall;
+        GameManager.Instance.LoseBead -= MakeWall;
     }
 }

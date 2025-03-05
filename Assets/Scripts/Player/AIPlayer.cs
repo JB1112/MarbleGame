@@ -14,7 +14,7 @@ public class AIPlayer : MonoBehaviour
 
     private void Awake()
     {
-        GameManager.turnStart += CheckMyTurn;
+        GameManager.Instance.turnStart += CheckMyTurn;
     }
 
     private void Start()
@@ -25,16 +25,18 @@ public class AIPlayer : MonoBehaviour
 
     private void CheckMyTurn()
     {
-        if (GameManager.mainGameTurn[GameManager.turn - 1] >= 1)
+        Debug.Log(GameManager.Instance.mainGameTurn[GameManager.Instance.turn - 1]);
+        Debug.Log(GameManager.Instance.PlayerNumber);
+        if (GameManager.Instance.mainGameTurn[GameManager.Instance.turn - 1] >= GameManager.Instance.PlayerNumber)
         {
-            GameManager.isMoving = false;
+            GameManager.Instance.isMoving = false;
             StartCoroutine(ShootBall());
         }
     }
 
     private IEnumerator ShootBall()
     {
-        while (GameManager.isWaiting)
+        while (GameManager.Instance.isWaiting)
         {
             yield return null;
         }
@@ -50,7 +52,7 @@ public class AIPlayer : MonoBehaviour
         rb.AddForce(direction * force, ForceMode.Impulse);
 
         audio.Play();
-        GameManager.isMoving = true;
+        GameManager.Instance.isMoving = true;
         move.CheckStop();
     }
 
@@ -63,7 +65,7 @@ public class AIPlayer : MonoBehaviour
 
         float mass = rb.mass;
 
-        if(GameManager.isSetTurn)
+        if(GameManager.Instance.isSetTurn)
         {
             float randomMultiplier = Random.Range(1.0f, 1.5f);
 
@@ -85,7 +87,7 @@ public class AIPlayer : MonoBehaviour
     {
         Vector3 targetpos;
 
-        if(GameManager.isSetTurn)
+        if(GameManager.Instance.isSetTurn)
         {
             GameObject Line = GameObject.FindGameObjectWithTag(EndLine);
 
@@ -110,5 +112,10 @@ public class AIPlayer : MonoBehaviour
         targetpos.x += randomOffsetX;
 
         return targetpos;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.Instance.turnStart -= CheckMyTurn;
     }
 }

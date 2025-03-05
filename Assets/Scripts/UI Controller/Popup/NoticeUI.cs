@@ -5,15 +5,15 @@ public class NoticeUI : PopupUI
 
     public void OnEnable()
     {
-        GameManager.isWaiting = true;
+        GameManager.Instance.isWaiting = true;
     }
     public void ResetPanel()
     {
-        if(GameManager.isSetTurn)
+        if(GameManager.Instance.isSetTurn)
         {
-            GameManager.isWaiting = false;
+            GameManager.Instance.isWaiting = false;
         }
-        GameManager.turnStart?.Invoke();
+        GameManager.Instance.turnStart?.Invoke();
         this.gameObject.SetActive(false);
     }
 }

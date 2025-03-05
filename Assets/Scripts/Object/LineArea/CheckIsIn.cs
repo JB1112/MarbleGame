@@ -9,7 +9,7 @@ public class CheckIsIn : MonoBehaviour
     {
         if (other.CompareTag(player))
         {
-            GameManager.isIn = true;
+            GameManager.Instance.isIn = true;
         }
     }
 }

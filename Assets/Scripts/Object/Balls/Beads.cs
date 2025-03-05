@@ -7,7 +7,7 @@ public class Beads : MonoBehaviour
     private void OnEnable()
     {
         isout = false;
-        GameManager.CheckBead += CheckIsOut;
+        GameManager.Instance.CheckBead += CheckIsOut;
     }
 
     public void CheckIsOut()
@@ -20,6 +20,6 @@ public class Beads : MonoBehaviour
 
     private void OnDisable()
     {
-        GameManager.CheckBead -= CheckIsOut;
+        GameManager.Instance.CheckBead -= CheckIsOut;
     }
 }

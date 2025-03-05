@@ -9,7 +9,7 @@ public class LineArea : MonoBehaviour
     public List<GameObject> lines = new List<GameObject>();
     void Start()
     {
-        GameManager.GameStart += DrawLine;
+        GameManager.Instance.GameStart += DrawLine;
     }
 
     private void DrawLine()
@@ -22,6 +22,6 @@ public class LineArea : MonoBehaviour
 
     private void OnDisable()
     {
-        GameManager.GameStart -= DrawLine;
+        GameManager.Instance.GameStart -= DrawLine;
     }
 }

@@ -1,58 +1,105 @@
 using System;
 using System.Collections.Generic;
+using UnityEditor.Build.Content;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour
+public class GameManager : Singleton<GameManager>
 {
     [Header("Time")]
     public float time = 10.0f;
 
     public GameObject SubCamera;
 
-    public static Action decideTurn;
-    public static Action GameStart;
-    public static Action<Vector3> chekDistance; // 공과 엔드라인까지의 거리를 계산하기 위함
-    public static Action<float> CheckScore; //순서 정하기 및 점수 계산을 위한 로직
-    public static Action turnStart;
-    public static Action CheckBead;
-    public static Action<int> LoseBead;
+    public Action decideTurn;
+    public Action GameStart;
+    public Action<Vector3> chekDistance; // 공과 엔드라인까지의 거리를 계산하기 위함
+    public Action<float> CheckScore; //순서 정하기 및 점수 계산을 위한 로직
+    public Action turnStart;
+    public Action CheckBead;
+    public Action<int> LoseBead;
 
-    public static bool isSetTurn; //턴을 정하는 중이라면
-    public static bool isIn = false;
-    public static bool isWaiting = true;
-    public static bool isMoving = false;
+    public bool isSetTurn; //턴을 정하는 중이라면
+    public bool isIn = false;
+    public bool isWaiting = true;
+    public bool isMoving = false;
 
-    public static int turn = 1;
-    public static int preTurn;
-    public static int PlayerNumber = 1;
-    public static int outBall = 0;
+    private bool isSceneLoaded = false;
+
+    public int turn = 1;
+    public int preTurn;
+    public int PlayerNumber = 1;
+    public int outBall = 0;
     public int totalBalls = 21;
     public int feildBalls = 12;
 
-    public static List<Transform> spwanPosition = new List<Transform>();
+    public List<Transform> spwanPosition = new List<Transform>();
 
-    public static List<string> players = new List<string>();
-    public static List<int> mainGameTurn = new List<int>();
-    public static List<bool> isOver = new List<bool>();
+    public List<string> players = new List<string>();
+    public List<int> mainGameTurn = new List<int>();
+    public List<bool> isOver = new List<bool>();
 
-    public static List<int> haveBalls = new List<int>();
-    public static List<int> GainBalls = new List<int>();
-    public static List<int> curScore = new List<int>();
+    public List<int> haveBalls = new List<int>();
+    public List<int> GainBalls = new List<int>();
+    public List<int> curScore = new List<int>();
 
     public ObjectPool pools;
 
-    private void Awake()
+    private void OnEnable()
     {
-        GameStart += DropBalls;
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
-    void Start()
+    private void OnDisable()
     {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+
+        GameStart -= DropBalls;
+
+        if (!isSetTurn)
+        {
+            CheckBead -= UpdateBallCount;
+            LoseBead -= LoseBall;
+        }
+
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        GameStart -= DropBalls;
+
+        if (!isSetTurn)
+        {
+            CheckBead -= UpdateBallCount;
+            LoseBead -= LoseBall;
+        }
+
+
+        if (scene.buildIndex == 1)
+        {
+            isSceneLoaded = false;
+
+            if (!isSceneLoaded)
+            {
+                isSceneLoaded = true;
+                SceneLoad();
+            }
+        }
+    }
+
+
+    public void SceneLoad()
+    {
+        GameStart += DropBalls;
         turn = 1;
         isSetTurn = true;
-        decideTurn?.Invoke();
-
+        isIn = false;
+        isWaiting = true;
+        isMoving = false;
+        outBall = 0;
+        totalBalls = 21;
+        feildBalls = 12;
+        
         players.Clear();
         mainGameTurn.Clear();
         haveBalls.Clear();
@@ -62,13 +109,13 @@ public class GameManager : MonoBehaviour
 
         for (int i = 0; i < 3; i++)
         {
-            if(i ==0)
+            if (i < PlayerNumber)
             {
                 players.Add($"Player{i + 1}");
             }
             else
             {
-                players.Add($"COM{i}");
+                players.Add($"COM{i-(PlayerNumber-1)}");
             }
             mainGameTurn.Add(i);
             haveBalls.Add(3);
@@ -76,7 +123,7 @@ public class GameManager : MonoBehaviour
             curScore.Add(0);
             isOver.Add(false);
         }
-
+        decideTurn?.Invoke();
     }
 
     private void DropBalls()
@@ -142,16 +189,18 @@ public class GameManager : MonoBehaviour
     void ResetGame()
     {
         ResourcesManager.Instance.ClearDic();
+
         SceneManager.LoadScene(1);
     }
 
     void LoadStartScene()
     {
         ResourcesManager.Instance.ClearDic();
+
         SceneManager.LoadScene(0);
     }
 
-    public static void turnChange()
+    public void turnChange()
     {
         preTurn = turn;
         int startTurn = turn;
@@ -192,17 +241,6 @@ public class GameManager : MonoBehaviour
 
         CheckBead?.Invoke();
         turnStart?.Invoke();
-    }
-
-    private void OnDisable()
-    {
-        GameStart -= DropBalls;
-
-        if(!isSetTurn)
-        {
-            CheckBead -= UpdateBallCount;
-            LoseBead -= LoseBall;
-        }
     }
 
     private void CheckGameOver()

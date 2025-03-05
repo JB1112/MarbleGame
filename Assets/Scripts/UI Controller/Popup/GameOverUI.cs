@@ -22,9 +22,9 @@ public class GameOverUI : PopupUI
     {
         for(int i = 0; i < 3; i++)
         {
-            playerName[i].text = $"{GameManager.players[i]}";
-            gainBalls[i].text = $"Beads : {GameManager.GainBalls[GameManager.mainGameTurn[i]]}";
-            scores[i].text = $"Score : {GameManager.curScore[GameManager.mainGameTurn[i]]}";
+            playerName[i].text = $"{GameManager.Instance.players[i]}";
+            gainBalls[i].text = $"Beads : {GameManager.Instance.GainBalls[GameManager.Instance.mainGameTurn[i]]}";
+            scores[i].text = $"Score : {GameManager.Instance.curScore[GameManager.Instance.mainGameTurn[i]]}";
         }
 
         int highestIndex = GetHighestIndex(scores);

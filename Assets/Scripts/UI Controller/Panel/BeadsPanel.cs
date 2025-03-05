@@ -11,19 +11,19 @@ public class BeadsPanel : MonoBehaviour
 
     void Start()
     {
-        GameManager.CheckBead += Calculate;
+        GameManager.Instance.CheckBead += Calculate;
     }
 
     private void Calculate()
     {
-        int i = GameManager.preTurn - 1;
-        haveBalls[i].text = $"X{GameManager.haveBalls[i]}";
-        gainBalls[i].text = $"X{GameManager.GainBalls[i]}";
+        int i = GameManager.Instance.preTurn - 1;
+        haveBalls[i].text = $"X{GameManager.Instance.haveBalls[i]}";
+        gainBalls[i].text = $"X{GameManager.Instance.GainBalls[i]}";
     }
 
     private void OnDisable()
     {
-        GameManager.CheckBead -= Calculate;
+        GameManager.Instance.CheckBead -= Calculate;
 
     }
 }

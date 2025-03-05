@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        GameManager.turnStart += CheckMyTurn;
+        GameManager.Instance.turnStart += CheckMyTurn;
     }
 
     private void Update()
@@ -51,16 +51,16 @@ public class PlayerController : MonoBehaviour
 
     private void CheckMyTurn()
     {
-        if (GameManager.mainGameTurn[GameManager.turn-1] == 0)
+        if (GameManager.Instance.mainGameTurn[GameManager.Instance.turn-1] <= GameManager.Instance.PlayerNumber-1)
         {
-            GameManager.isMoving = false;
+            GameManager.Instance.isMoving = false;
             isMyTurn = true;
         }
     }
 
     public void OnDragInput(InputAction.CallbackContext context)
     {
-        if (GameManager.isMoving || GameManager.isWaiting || !isMyTurn)
+        if (GameManager.Instance.isMoving || GameManager.Instance.isWaiting || !isMyTurn)
         {
             return;
         }
@@ -86,7 +86,7 @@ public class PlayerController : MonoBehaviour
             dragEndPos = Input.mousePosition;
             isDragging = false;
             ShootBall();
-            GameManager.isMoving = true;
+            GameManager.Instance.isMoving = true;
             arrowIndicator.gameObject.SetActive(false);
         }
     }
@@ -143,6 +143,6 @@ public class PlayerController : MonoBehaviour
 
     private void OnDisable()
     {
-        GameManager.turnStart -= CheckMyTurn;
+        GameManager.Instance.turnStart -= CheckMyTurn;
     }
 }

@@ -14,13 +14,13 @@ public class ScorePanel : MonoBehaviour
 
     private void Awake()
     {
-        GameManager.turnStart += ChangePlayer;
-        GameManager.CheckScore += WriteScore;
+        GameManager.Instance.turnStart += ChangePlayer;
+        GameManager.Instance.CheckScore += WriteScore;
     }
 
     private void WriteScore(float obj)
     {
-        int i = GameManager.turn - 1;
+        int i = GameManager.Instance.turn - 1;
 
         if(obj < 0)
         {
@@ -33,13 +33,13 @@ public class ScorePanel : MonoBehaviour
             scores[i].text = (float.Parse(scores[i].text) + plus).ToString();
         }
 
-        GameManager.curScore[i] = int.Parse(scores[i].text);
+        GameManager.Instance.curScore[i] = int.Parse(scores[i].text);
     }
 
     private void ChangePlayer()
     {
-        int pre = GameManager.preTurn -1;
-        int post = GameManager.turn - 1;
+        int pre = GameManager.Instance.preTurn -1;
+        int post = GameManager.Instance.turn - 1;
 
         turnchecks[pre].SetActive(false);
         turnchecks[post].SetActive(true);
@@ -49,7 +49,7 @@ public class ScorePanel : MonoBehaviour
 
     private void OnDisable()
     {
-        GameManager.turnStart -= ChangePlayer;
-        GameManager.CheckScore -= WriteScore;
+        GameManager.Instance.turnStart -= ChangePlayer;
+        GameManager.Instance.CheckScore -= WriteScore;
     }
 }

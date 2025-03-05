@@ -13,7 +13,7 @@ public class TimePanel : MonoBehaviour
 
     private void Start()
     {
-        GameManager.turnStart += TimeGoseOn;
+        GameManager.Instance.turnStart += TimeGoseOn;
 
     }
 
@@ -31,14 +31,14 @@ public class TimePanel : MonoBehaviour
 
         timeRemaining = 10f;
 
-        while (GameManager.isWaiting)
+        while (GameManager.Instance.isWaiting)
         {
             yield return null;
         }
 
         while (timeRemaining > 0)
         {
-            if(GameManager.isMoving)
+            if(GameManager.Instance.isMoving)
             {
                 isRunning = false;
                 yield break;
@@ -51,11 +51,11 @@ public class TimePanel : MonoBehaviour
         timeText.text = "0.0";
         isRunning = false;
 
-        GameManager.turnChange();
+        GameManager.Instance.turnChange();
     }
 
     private void OnDisable()
     {
-        GameManager.turnStart -= TimeGoseOn;
+        GameManager.Instance.turnStart -= TimeGoseOn;
     }
 }

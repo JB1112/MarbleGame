@@ -15,12 +15,13 @@ public class MainSceneUI : SceneUI
     public List<TextMeshProUGUI> Distances;
     public List<TextMeshProUGUI> ScorePanelName;
     public List<TextMeshProUGUI> BeadsPanelName;
+    public TextMeshProUGUI PlayerName;
 
 
     private void Awake()
     {
-        GameManager.decideTurn += ShowNoticePanel;
-        GameManager.GameStart += CheckTurn;
+        GameManager.Instance.decideTurn += ShowNoticePanel;
+        GameManager.Instance.GameStart += CheckTurn;
     }
 
     private void CheckTurn()
@@ -37,13 +38,13 @@ public class MainSceneUI : SceneUI
 
         CompareValue = CompareValue.OrderBy(x => x.value).ToList();
 
-        GameManager.mainGameTurn.Clear();
+        GameManager.Instance.mainGameTurn.Clear();
 
         for (int i = 0;i < CompareValue.Count;i++)
         {
-            GameManager.mainGameTurn.Add(CompareValue[i].index);
-            ScorePanelName[i].text = GameManager.players[GameManager.mainGameTurn[i]];
-            BeadsPanelName[i].text = GameManager.players[GameManager.mainGameTurn[i]];
+            GameManager.Instance.mainGameTurn.Add(CompareValue[i].index);
+            ScorePanelName[i].text = GameManager.Instance.players[GameManager.Instance.mainGameTurn[i]];
+            BeadsPanelName[i].text = GameManager.Instance.players[GameManager.Instance.mainGameTurn[i]];
         }
 
         UISetting();
@@ -59,7 +60,9 @@ public class MainSceneUI : SceneUI
 
     private void ShowNoticePanel()
     {
-        if(GameManager.isSetTurn == true)
+        PlayerName.text = $"{GameManager.Instance.players[0]}\n\n{GameManager.Instance.players[1]}\n\n{GameManager.Instance.players[2]}";
+
+        if(GameManager.Instance.isSetTurn == true)
         {
             UIController.Instance.ShowUI<NoticeUI>(UIs.Popup);
 
@@ -78,7 +81,7 @@ public class MainSceneUI : SceneUI
 
     private void OnDisable()
     {
-        GameManager.decideTurn -= ShowNoticePanel;
-        GameManager.GameStart -= CheckTurn;
+        GameManager.Instance.decideTurn -= ShowNoticePanel;
+        GameManager.Instance.GameStart -= CheckTurn;
     }
 }

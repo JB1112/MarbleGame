@@ -7,11 +7,11 @@ public class BeadPosition : MonoBehaviour
     void Start()
     {
 
-        GameManager.spwanPosition.Clear();
+        GameManager.Instance.spwanPosition.Clear();
 
         foreach(Transform child in transform)
         {
-            GameManager.spwanPosition.Add(child);
+            GameManager.Instance.spwanPosition.Add(child);
         }
     }
 }

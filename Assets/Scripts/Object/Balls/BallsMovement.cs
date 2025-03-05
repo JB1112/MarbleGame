@@ -42,14 +42,14 @@ public class BallsMovement : MonoBehaviour
 
     void ReturnBall()
     {
-        if(GameManager.isSetTurn == true)
+        if(GameManager.Instance.isSetTurn == true)
         {
-            GameManager.chekDistance?.Invoke(transform.position);
+            GameManager.Instance.chekDistance?.Invoke(transform.position);
         }
-        else if(transform.position.y < 0 || GameManager.isIn)
+        else if(transform.position.y < 0 || GameManager.Instance.isIn)
         {
-            GameManager.outBall = -GameManager.outBall;
-            GameManager.CheckScore(GameManager.outBall);
+            GameManager.Instance.outBall = -GameManager.Instance.outBall;
+            GameManager.Instance.CheckScore(GameManager.Instance.outBall);
         }
         audio.Stop();
 
@@ -58,6 +58,6 @@ public class BallsMovement : MonoBehaviour
         transform.position = returnPoint;
         transform.rotation = Quaternion.identity;
         isReturning = false;  // 다시 움직일 수 있도록 초기화
-        GameManager.turnChange();
+        GameManager.Instance.turnChange();
     }
 }

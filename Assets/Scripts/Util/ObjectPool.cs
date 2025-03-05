@@ -16,8 +16,9 @@ public class ObjectPool : Singleton<ObjectPool>
     public List<Pool> Pools;
     public Dictionary<string, Queue<GameObject>> PoolDictionary;
 
-    private void Awake()
+    private void Start()
     {
+        GameManager.Instance.pools = this;
         InitializePool();
     }
 

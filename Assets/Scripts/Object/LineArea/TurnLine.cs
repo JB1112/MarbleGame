@@ -9,8 +9,8 @@ public class TurnLine : MonoBehaviour
 
     private void Awake()
     {
-        GameManager.chekDistance += CheckDistance;
-        GameManager.GameStart += LineOff;
+        GameManager.Instance.chekDistance += CheckDistance;
+        GameManager.Instance.GameStart += LineOff;
     }
 
     private void LineOff()
@@ -23,12 +23,12 @@ public class TurnLine : MonoBehaviour
     {
         distance = MathF.Abs(ballDistance.z - endLine.transform.position.z);
 
-        GameManager.CheckScore?.Invoke(distance);
+        GameManager.Instance.CheckScore?.Invoke(distance);
     }
 
     private void OnDisable()
     {
-        GameManager.chekDistance -= CheckDistance;
-        GameManager.GameStart -= LineOff;
+        GameManager.Instance.chekDistance -= CheckDistance;
+        GameManager.Instance.GameStart -= LineOff;
     }
 }

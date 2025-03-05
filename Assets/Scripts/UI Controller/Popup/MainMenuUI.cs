@@ -5,8 +5,7 @@ public class MainMenuUI : PopupUI
 {
     public void GameStart()
     {
-        ResourcesManager.Instance.ClearDic();
-        SceneManager.LoadScene(1);
+        UIController.Instance.ShowUI<ChoicePlayerUI>(UIs.Popup);
     }
 
     public void OpenOption()
