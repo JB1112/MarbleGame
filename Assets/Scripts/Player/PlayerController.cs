@@ -60,7 +60,7 @@ public class PlayerController : MonoBehaviour
 
     public void OnDragInput(InputAction.CallbackContext context)
     {
-        if (GameManager.Instance.isMoving || GameManager.Instance.isWaiting || !isMyTurn)
+        if (GameManager.Instance.isMoving || GameManager.Instance.isWaiting || !isMyTurn || Time.timeScale!=1)
         {
             return;
         }

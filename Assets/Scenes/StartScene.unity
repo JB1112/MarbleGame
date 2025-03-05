@@ -157,9 +157,9 @@ MonoBehaviour:
   isIn: 0
   isWaiting: 1
   isMoving: 0
-  masterVolume: 0
-  BGM: 0
-  EffectSoundVolume: 0
+  masterVolume: 1
+  BGM: 1
+  EffectSoundVolume: 1
   turn: 1
   preTurn: 0
   PlayerNumber: 1
