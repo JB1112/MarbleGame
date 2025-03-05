@@ -22,7 +22,6 @@ public class GameOverUI : PopupUI
     {
         for(int i = 0; i < 3; i++)
         {
-            Debug.Log(GameManager.mainGameTurn[i]);
             playerName[i].text = $"{GameManager.players[i]}";
             gainBalls[i].text = $"Beads : {GameManager.GainBalls[GameManager.mainGameTurn[i]]}";
             scores[i].text = $"Score : {GameManager.curScore[GameManager.mainGameTurn[i]]}";
@@ -72,10 +71,6 @@ public class GameOverUI : PopupUI
             })
             .ToList();
 
-        for (int i = 0; i < scoreValues.Count; i++)
-        {
-            Debug.Log(scoreValues[i]);
-        }
         float maxValue = scoreValues.Max();
 
         List<int> maxIndexes = scoreValues

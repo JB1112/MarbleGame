@@ -13,9 +13,12 @@ public class PlayerController : MonoBehaviour
 
     public AudioSource audio;
 
+    private float dragStartTime; 
+    private const float minDragTime = 0.2f; 
 
 
     private bool isDragging = false;
+    private bool isMyTurn = true;
 
     public float forceMultiplier;
     private Rigidbody rb;
@@ -48,24 +51,38 @@ public class PlayerController : MonoBehaviour
 
     private void CheckMyTurn()
     {
-        GameManager.isMoving = false; //Todo 임시 처리 내 턴이 아니면 false가 되도록 수정
+        if (GameManager.mainGameTurn[GameManager.turn-1] == 0)
+        {
+            GameManager.isMoving = false;
+            isMyTurn = true;
+        }
     }
 
     public void OnDragInput(InputAction.CallbackContext context)
     {
-        if (GameManager.isMoving || GameManager.isWaiting)
+        if (GameManager.isMoving || GameManager.isWaiting || !isMyTurn)
         {
             return;
         }
 
-        if (context.phase == InputActionPhase.Performed)
+        if (context.phase == InputActionPhase.Started)
         {
+            dragStartTime = Time.time;
             dragStartPos = Input.mousePosition;
             isDragging = true;
             arrowIndicator.gameObject.SetActive(true);
         }
         else if (context.phase == InputActionPhase.Canceled)
         {
+            float dragDuration = Time.time - dragStartTime;
+
+            if(dragDuration < minDragTime)
+            {
+                isDragging = false;
+                arrowIndicator.gameObject.SetActive(false);
+                return;
+            }
+
             dragEndPos = Input.mousePosition;
             isDragging = false;
             ShootBall();
@@ -97,6 +114,8 @@ public class PlayerController : MonoBehaviour
         Vector3 force = worldDragDirection.normalized * dragDistance * forceMultiplier;
 
         rb.AddForce(force, ForceMode.Impulse);
+
+        isMyTurn = false;
 
         audio.Play();
 

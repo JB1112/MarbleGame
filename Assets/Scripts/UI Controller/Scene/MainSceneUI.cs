@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MainSceneUI : SceneUI
@@ -36,12 +37,11 @@ public class MainSceneUI : SceneUI
 
         CompareValue = CompareValue.OrderBy(x => x.value).ToList();
 
+        GameManager.mainGameTurn.Clear();
+
         for (int i = 0;i < CompareValue.Count;i++)
         {
             GameManager.mainGameTurn.Add(CompareValue[i].index);
-            Debug.Log(CompareValue[i].index);
-            Debug.Log(GameManager.mainGameTurn[i]);
-            Debug.Log(GameManager.players[i]);
             ScorePanelName[i].text = GameManager.players[GameManager.mainGameTurn[i]];
             BeadsPanelName[i].text = GameManager.players[GameManager.mainGameTurn[i]];
         }

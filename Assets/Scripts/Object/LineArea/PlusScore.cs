@@ -26,7 +26,6 @@ public class PlusScore : MonoBehaviour
         else if (other.CompareTag(player))
         {
             GameManager.isIn = false;
-            Debug.Log("³ª°¨");
         }
     }
 }

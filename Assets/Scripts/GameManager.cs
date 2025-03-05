@@ -62,7 +62,15 @@ public class GameManager : MonoBehaviour
 
         for (int i = 0; i < 3; i++)
         {
-            players.Add($"Player{i + 1}");
+            if(i ==0)
+            {
+                players.Add($"Player{i + 1}");
+            }
+            else
+            {
+                players.Add($"COM{i}");
+            }
+            mainGameTurn.Add(i);
             haveBalls.Add(3);
             GainBalls.Add(0);
             curScore.Add(0);
@@ -92,11 +100,9 @@ public class GameManager : MonoBehaviour
         {
             int dropAmount = GainBalls[i] + Math.Abs(outBall) + 1;
             LoseBead?.Invoke(dropAmount);
-            Debug.Log(dropAmount);
             haveBalls[i] = haveBalls[i] - 1;
             feildBalls = feildBalls + GainBalls[i] + 1;
             GainBalls[i] = 0;
-            Debug.Log($"ÇÊµå °ø{feildBalls}");
             isIn = false;
             outBall = 0;
 

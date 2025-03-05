@@ -10,7 +10,6 @@ public class CheckIsIn : MonoBehaviour
         if (other.CompareTag(player))
         {
             GameManager.isIn = true;
-            Debug.Log($"µé¾î°¨{GameManager.isIn}");
         }
     }
 }
